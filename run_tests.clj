@@ -1,0 +1,8 @@
+(require '[clojure.test :as t])
+(def suites '[ake.cells.test-membrane-flow ake.cells.test-state-machines
+ ake.methods.test--edn ake.methods.test-analyze ake.methods.test-charter-invariants
+ ake.methods.test-consistency ake.methods.test-contributor ake.methods.test-editwar
+ ake.methods.test-ingest ake.methods.test-lexicons ake.methods.test-revision
+ ake.methods.test-triage ake.murakumo-test ake.repository-contract-test])
+(apply require suites)
+(let [r (apply t/run-tests suites)] (System/exit (if (zero? (+ (:fail r) (:error r))) 0 1)))

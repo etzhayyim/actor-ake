@@ -6,7 +6,7 @@
   modules, so parity is over the plain revision-history shape, not a CID).
 
   HERMETIC: asserted against the committed FIXTURE
-  (20-actors/ake/data/sample-profile-seed.kotoba.edn) with exact, known counts."
+  (data/sample-profile-seed.kotoba.edn) with exact, known counts."
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
             [clojure.test :refer [deftest is]]
@@ -18,14 +18,14 @@
     (loop [d cwd]
       (cond
         (nil? d) cwd
-        (.exists (io/file d "20-actors" "ake" "data" "sample-profile-seed.kotoba.edn")) d
+        (.exists (io/file d "data" "sample-profile-seed.kotoba.edn")) d
         :else (recur (.getParentFile d))))))
 
 (def ^:private fixture
-  (io/file (repo-root) "20-actors" "ake" "data" "sample-profile-seed.kotoba.edn"))
+  (io/file (repo-root) "data" "sample-profile-seed.kotoba.edn"))
 
 (def ^:private methods-dir
-  (io/file (repo-root) "20-actors" "ake" "methods"))
+  (io/file (repo-root) "src" "ake" "methods"))
 
 ;; ── hermetic: exact behaviour on the committed fixture (3 records / 7 revisions) ──
 

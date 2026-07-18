@@ -9,13 +9,13 @@
 
 #?(:clj
    (def ^:private seed-path
-     "20-actors/ake/data/seed-edit-graph.kotoba.edn"))
+     "data/seed-edit-graph.kotoba.edn"))
 
 ;; _e(eid) = {e[":edit/id"]: e for e in load_edn(_SEED)[":edit/batch"]}[eid]
 #?(:clj
    (defn- e [eid]
      (get (into {} (map (fn [ed] [(get ed ":edit/id") ed])
-                        (get (edn/load-edn seed-path) ":edit/batch")))
+                        (get (edn/reconstitute (edn/load-edn seed-path) "data.seed-edit-graph") ":edit/batch")))
           eid)))
 
 (deftest test-append-returns-new-list-and-never-shrinks

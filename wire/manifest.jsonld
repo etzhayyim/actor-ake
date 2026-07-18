@@ -90,7 +90,7 @@
       "charterRider": "/90-docs/adr/2605192200-etzhayyim-ip-free-release-charter-rider.md",
       "murakumoOnly": "/90-docs/adr/2605215000-etzhayyim-inference-murakumo-only-no-runpod.md"
     },
-    "schema": "/00-contracts/schemas/community-edit-ontology.kotoba.edn",
-    "seed": "/20-actors/ake/data/seed-edit-graph.kotoba.edn"
+    "schema": "/contracts/schemas/community-edit-ontology.kotoba.edn",
+    "seed": "/data/seed-edit-graph.kotoba.edn"
   }
 }

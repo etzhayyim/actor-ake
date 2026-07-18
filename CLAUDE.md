@@ -101,7 +101,7 @@ cd methods && python3 ingest.py                 # genesis history from the REAL 
 
 `methods/contributor.py` is the G9 engine (rate limit + recoverable Wellbecoming trajectory);
 `methods/ingest.py` bootstraps the revision history from the REAL committed
-`00-contracts/schemas/actor-profile-seed.kotoba.edn` (the SSoT the DID-web Worker publishes from) —
+`contracts/schemas/actor-profile-seed.kotoba.edn` (the SSoT the DID-web Worker publishes from) —
 member edits append on top; `methods/test_consistency.py` is the SSoT drift-lock (manifest ↔ cell
 tree ↔ lex ↔ ontology ↔ seed ↔ registry). Touch a cell/lexicon/route and the drift-lock fails
 loudly before it ships.

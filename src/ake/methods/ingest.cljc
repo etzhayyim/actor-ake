@@ -5,7 +5,7 @@
   The membrane's 'view history' must start from *reality*, not an empty log: every
   actor profile that exists today has a current committed value, and that value is the
   **genesis revision** on top of which member edits later append. This bridge reads the
-  REAL repo SSoT (`00-contracts/schemas/actor-profile-seed.kotoba.edn`) and seeds the
+  REAL repo SSoT (`contracts/schemas/actor-profile-seed.kotoba.edn`) and seeds the
   append-only revision history with one genesis `:revision/*` per actor-profile field.
 
   Honest scope: a READ over a committed repo file + an offline genesis-history build. It
@@ -31,22 +31,22 @@
 
 #?(:clj
    (defn- repo-root []
-     ;; methods file lives at 20-actors/ake/methods/ ; parents[3] = repo root.
+     ;; methods file lives at methods/ ; parents[3] = repo root.
      ;; bb runs from the worktree root (bb.edn cwd) → resolve from there.
      (let [cwd (io/file (System/getProperty "user.dir"))
-           candidate (io/file cwd "00-contracts" "schemas" "actor-profile-seed.kotoba.edn")]
+           candidate (io/file cwd "contracts" "schemas" "actor-profile-seed.kotoba.edn")]
        (if (.exists candidate)
          cwd
          ;; fall back to walking up from the methods dir if cwd isn't the repo root
          (loop [d cwd]
            (cond
              (nil? d) cwd
-             (.exists (io/file d "00-contracts" "schemas" "actor-profile-seed.kotoba.edn")) d
+             (.exists (io/file d "contracts" "schemas" "actor-profile-seed.kotoba.edn")) d
              :else (recur (.getParentFile d))))))))
 
 #?(:clj
    (defn profile-seed-path []
-     (io/file (repo-root) "00-contracts" "schemas" "actor-profile-seed.kotoba.edn")))
+     (io/file (repo-root) "contracts" "schemas" "actor-profile-seed.kotoba.edn")))
 
 ;; ── genesis edit (mirror `_genesis_edit`) ─────────────────────────────────
 
@@ -61,7 +61,7 @@
    ":edit/proposed-value" value
    ":edit/author" genesis-by
    ":edit/author-kind" ":member"
-   ":edit/provenance" "00-contracts/schemas/actor-profile-seed.kotoba.edn"
+   ":edit/provenance" "contracts/schemas/actor-profile-seed.kotoba.edn"
    ":edit/sourcing" ":authoritative"})   ;; mirrors the committed SSoT
 
 ;; ── core build (mirror `genesis_revisions`) ───────────────────────────────
@@ -103,7 +103,9 @@
      ([] (genesis-revisions (profile-seed-path) genesis-as-of-base))
      ([profile-seed-path] (genesis-revisions profile-seed-path genesis-as-of-base))
      ([profile-seed-path as-of-base]
-      (genesis-revisions-from-seed (edn/load-edn profile-seed-path) as-of-base))))
+      (genesis-revisions-from-seed
+       (edn/reconstitute (edn/load-edn profile-seed-path) "data.sample-profile-seed")
+       as-of-base))))
 
 ;; ── report (mirror `_report`) ─────────────────────────────────────────────
 
@@ -113,7 +115,7 @@
   (let [{:keys [history actors records]} res
         head ["# 朱 (ake) — genesis revision history from the REAL actor-profile SSoT\n"
               (str "Bootstrapped " (count history) " genesis revisions across " records
-                   " actor profiles (read from `00-contracts/schemas/actor-profile-seed.kotoba.edn`).\n")
+                   " actor profiles (read from `contracts/schemas/actor-profile-seed.kotoba.edn`).\n")
               (str "Member edits via the membrane append ON TOP of these (the log only grows). NO ingest "
                    "into the canonical kotoba Datom log (G8).\n")
               "| actor | description revisions | current sourcing |"

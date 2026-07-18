@@ -1,0 +1,2 @@
+{:repository/id "com-etzhayyim-ake" :repository/type :actor
+ :actor/id :ake :actor/did "did:web:etzhayyim.com:actor:ake" :canonical-format :edn}

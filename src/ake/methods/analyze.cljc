@@ -149,14 +149,15 @@
 
 #?(:clj
    (defn- ake-root
-     "Resolve 20-actors/ake/ — from *file* if available, else walk up from user.dir."
+     "Resolve the standalone repository root."
      []
-     (let [from-file (try (some-> *file* clojure.java.io/file .getParentFile .getParentFile)
+     (let [from-file (try (some-> *file* clojure.java.io/file .getParentFile .getParentFile
+                                  .getParentFile .getParentFile)
                           (catch Exception _ nil))]
        (if (and from-file (.exists (clojure.java.io/file from-file "data" "seed-edit-graph.kotoba.edn")))
          from-file
          (let [cwd (clojure.java.io/file (System/getProperty "user.dir"))
-               candidate (clojure.java.io/file cwd "20-actors" "ake")]
+               candidate cwd]
            (if (.exists (clojure.java.io/file candidate "data" "seed-edit-graph.kotoba.edn"))
              candidate
              cwd))))))
@@ -171,7 +172,7 @@
                        (clojure.java.io/file (first argv))
                        (clojure.java.io/file root "data" "seed-edit-graph.kotoba.edn"))
            outdir (clojure.java.io/file root "methods" "out")
-           res (run (edn/load-edn seed-path))
+           res (run (edn/reconstitute (edn/load-edn seed-path) "data.seed-edit-graph"))
            rpt (report res)]
        (.mkdirs outdir)
        (spit (clojure.java.io/file outdir "membrane-dryrun.md") rpt)

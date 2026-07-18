@@ -20,17 +20,17 @@
             #?(:clj [ake.methods._edn :as edn])
             #?(:clj [clojure.java.io :as io])))
 
-#?(:clj (def ^:private root "20-actors/ake"))
+#?(:clj (def ^:private root "."))
 #?(:clj (def ^:private repo "."))
 #?(:clj (def ^:private lex-dir (str root "/lex")))
-#?(:clj (def ^:private cells-dir (str root "/cells")))
-#?(:clj (def ^:private ontology (str repo "/00-contracts/schemas/community-edit-ontology.kotoba.edn")))
-#?(:clj (def ^:private profile-seed (str repo "/00-contracts/schemas/actor-profile-seed.kotoba.edn")))
+#?(:clj (def ^:private cells-dir (str root "/src/ake/cells")))
+#?(:clj (def ^:private ontology (str repo "/contracts/schemas/community-edit-ontology.kotoba.edn")))
+#?(:clj (def ^:private profile-seed (str repo "/contracts/schemas/actor-profile-seed.kotoba.edn")))
 
 #?(:clj
    (defn- manifest []
      (let [parse-json (requiring-resolve 'cheshire.core/parse-string)]
-       (parse-json (slurp (str root "/manifest.jsonld"))))))
+       (:actor/manifest (clojure.edn/read-string (slurp (str root "/manifest.edn")))))))
 
 #?(:clj
    (defn- load-edn [path] (edn/load-edn path)))
@@ -40,15 +40,14 @@
    (deftest test-manifest-cells-have-dirs-and-state-machines
      (doseq [cell (get (manifest) "cells")]
        (let [d (io/file cells-dir (get cell "name"))]
-         (is (.isFile (io/file d "cell.py")) (str "missing " (get cell "name") "/cell.py"))
-         (is (.isFile (io/file d "state_machine.py"))
-             (str "missing " (get cell "name") "/state_machine.py"))))))
+         (is (.isFile (io/file d "state_machine.cljc"))
+             (str "missing " (get cell "name") "/state_machine.cljc"))))))
 
 #?(:clj
    (deftest test-every-cell-dir-is-in-the-manifest
      (let [declared (set (map #(get % "name") (get (manifest) "cells")))
            on-disk (set (for [p (.listFiles (io/file cells-dir))
-                              :when (and (.isDirectory p) (.isFile (io/file p "cell.py")))]
+                              :when (and (.isDirectory p) (.isFile (io/file p "state_machine.cljc")))]
                           (.getName p)))]
        (is (= on-disk declared) (str "cell tree " on-disk " != manifest " declared)))))
 
@@ -60,14 +59,15 @@
              last* (last (str/split lid #"\."))
              f (io/file lex-dir (str last* ".edn"))]
          (is (.isFile f) (str "missing lexicon file for " lid))
-         (is (= lid (get (load-edn f) ":id")))))))
+         (is (= lid (get (edn/reconstitute (load-edn f) (str "lex." last*)) ":id")))))))
 
 #?(:clj
    (deftest test-every-lex-file-is-declared-in-manifest
      (let [declared (set (map #(get % "id") (get (manifest) "lexiconNamespaces")))
            on-disk (set (for [f (.listFiles (io/file lex-dir))
                               :when (str/ends-with? (.getName f) ".edn")]
-                          (get (load-edn f) ":id")))]
+                          (let [name (str/replace (.getName f) #"\.edn$" "")]
+                            (get (edn/reconstitute (load-edn f) (str "lex." name)) ":id"))))]
        (is (= on-disk declared)))))
 
 ;; ── manifest gate/non-goal counts (the stated 9 + 7) ────────────────────────
@@ -90,7 +90,9 @@
      (let [onto (load-edn ontology)
            kinds (set (get onto ":ontology/target-kinds"))
            ops (set (get onto ":ontology/edit-ops"))]
-       (doseq [e (get (load-edn (str root "/data/seed-edit-graph.kotoba.edn")) ":edit/batch")]
+       (doseq [e (get (edn/reconstitute (load-edn (str root "/data/seed-edit-graph.kotoba.edn"))
+                                        "data.seed-edit-graph")
+                      ":edit/batch")]
          (is (contains? kinds (get e ":edit/target-kind")) (get e ":edit/target-kind"))
          (is (contains? ops (get e ":edit/op")) (get e ":edit/op"))))))
 

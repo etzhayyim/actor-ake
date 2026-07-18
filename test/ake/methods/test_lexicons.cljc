@@ -9,18 +9,18 @@
             #?(:clj [ake.methods._edn :as edn])))
 
 #?(:clj
-   (def ^:private lex-dir "20-actors/ake/lex"))
+   (def ^:private lex-dir "lex"))
 
 #?(:clj
    (def ^:private ontology
-     "00-contracts/schemas/community-edit-ontology.kotoba.edn"))
+     "contracts/schemas/community-edit-ontology.kotoba.edn"))
 
 (def ^:private lexicons
   ["editProposal" "editTriage" "editReview" "editPromotion" "revisionEntry" "councilEditReview"])
 
 #?(:clj
    (defn- lex [name]
-     (edn/load-edn (str lex-dir "/" name ".edn"))))
+     (edn/reconstitute (edn/load-edn (str lex-dir "/" name ".edn")) (str "lex." name))))
 
 #?(:clj
    (defn- record* [d]

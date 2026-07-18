@@ -12,10 +12,10 @@
 
 #?(:clj
    (def ^:private seed-path
-     "20-actors/ake/data/seed-edit-graph.kotoba.edn"))
+     "data/seed-edit-graph.kotoba.edn"))
 
 #?(:clj
-   (defn- run* [] (a/run (edn/load-edn seed-path))))
+   (defn- run* [] (a/run (edn/reconstitute (edn/load-edn seed-path) "data.seed-edit-graph"))))
 
 #?(:clj
    (defn- by-id [res]

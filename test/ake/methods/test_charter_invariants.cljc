@@ -16,23 +16,23 @@
             #?(:clj [ake.methods._edn :as edn])))
 
 #?(:clj
-   (def ^:private lex-dir "20-actors/ake/lex"))
+   (def ^:private lex-dir "lex"))
 
 #?(:clj
    (def ^:private ontology
-     "00-contracts/schemas/community-edit-ontology.kotoba.edn"))
+     "contracts/schemas/community-edit-ontology.kotoba.edn"))
 
 #?(:clj
    (defn- onto [] (edn/load-edn ontology)))
 
 #?(:clj
    (defn- props [lex-name]
-     (-> (edn/load-edn (str lex-dir "/" lex-name ".edn"))
+     (-> (edn/reconstitute (edn/load-edn (str lex-dir "/" lex-name ".edn")) (str "lex." lex-name))
          (get-in [":defs" ":main" ":record" ":properties"]))))
 
 #?(:clj
    (defn- required [lex-name]
-     (-> (edn/load-edn (str lex-dir "/" lex-name ".edn"))
+     (-> (edn/reconstitute (edn/load-edn (str lex-dir "/" lex-name ".edn")) (str "lex." lex-name))
          (get-in [":defs" ":main" ":record" ":required"]))))
 
 ;; ── G3 mirror-preserving: only facts/profiles, never speech-as-entity ───────
