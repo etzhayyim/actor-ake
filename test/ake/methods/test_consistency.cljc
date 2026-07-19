@@ -7,7 +7,7 @@
   manifest (or renames a lexicon, or drifts the route vocab) fails loudly here instead of
   silently shipping.
 
-  The manifest.jsonld is read via cheshire (matching the ake house style in test_ingest.cljc);
+  The canonical manifest EDN is read through the platform EDN reader;
   lexicon / ontology / seed EDN via `ake.methods._edn`; the code route vocab from
   `ake.methods.triage`. All file / filesystem I/O sits behind #?(:clj). The __main__
   standalone runner is omitted.
@@ -17,6 +17,7 @@
   (:require [clojure.test :refer [deftest is run-tests]]
             [clojure.string :as str]
             [ake.methods.triage :as triage]
+            #?(:clj [clojure.edn :as platform-edn])
             #?(:clj [ake.methods._edn :as edn])
             #?(:clj [clojure.java.io :as io])))
 
@@ -29,8 +30,13 @@
 
 #?(:clj
    (defn- manifest []
-     (let [parse-json (requiring-resolve 'cheshire.core/parse-string)]
-       (:actor/manifest (clojure.edn/read-string (slurp (str root "/manifest.edn")))))))
+     (:actor/manifest (platform-edn/read-string
+                       (slurp (str root "/manifest.edn"))))))
+
+#?(:clj
+   (defn- repository-references []
+     (:actor/repository-references
+      (platform-edn/read-string (slurp (str root "/manifest.edn"))))))
 
 #?(:clj
    (defn- load-edn [path] (edn/load-edn path)))
@@ -111,17 +117,14 @@
      (let [blob (slurp profile-seed)]
        (when (str/includes? blob "did:web:etzhayyim.com:actor:ake")
          (let [m (manifest)
-               schema (-> (get-in m ["references" "schema"])
-                          (str/replace #"^/+" "")
-                          (str/replace "\"" ""))]
+               schema (:schema (repository-references))]
            (is (str/includes? (str/replace blob "\"" "") schema))
            (is (str/includes? blob "com.etzhayyim.ake")))))))
 
 ;; ── ADR file referenced by the manifest exists ──────────────────────────────
 #?(:clj
    (deftest test-adr-file-exists
-     (let [adr (io/file repo (str/replace (get-in (manifest) ["references" "adr" "master"])
-                                          #"^/+" ""))]
+     (let [adr (io/file repo (:master-adr (repository-references)))]
        (is (.isFile adr) (str "ADR not found: " adr)))))
 
 #?(:clj (defn -main [& _] (run-tests 'ake.methods.test-consistency)))
