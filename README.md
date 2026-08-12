@@ -1,5 +1,11 @@
 # 朱 (ake) — community-edit membrane
 
+Canonical repository: `etzhayyim/actor-ake`. This is a governed executable
+organ of the Tamaki-centered Etzhayyim artificial organism. It owns the
+member-signed correction membrane, not Tamaki's organism authority or the KG
+records that sibling actors own. The former repository name
+`com-etzhayyim-ake` remains a compatibility redirect.
+
 > *"Wikipedia のように皆で更新したい"* — fitted to the charter.
 
 朱 (vermillion editorial ink; **朱を入れる** = to correct a manuscript) is the actor that lets a

@@ -1,4 +1,4 @@
-{:did        "did:web:etzhayyim.github.io:com-etzhayyim-ake"
+{:did        "did:web:etzhayyim.com:actor:ake"
  :handle     "ake.etzhayyim.com"
  :ipns-key   "ake-actor"
  :graph-type "com.etzhayyim.ake.graph"
