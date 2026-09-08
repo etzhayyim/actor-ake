@@ -2,7 +2,7 @@
   "test_contributor.cljc — 朱 (ake) anti-vandalism rate + recoverable Wellbecoming trajectory (G9).
   1:1 Clojure port of `methods/test_contributor.py` (clojure.test). Every Python assertion ported."
   (:require [clojure.test :refer [deftest is run-tests]]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [ake.methods.contributor :as contrib]))
 
 ;; round(2/3, 4) reference (HALF_EVEN over the exact double, same as the Python round())
@@ -80,7 +80,7 @@
   ;; no public var name may imply ordering/comparison/scoring of contributors against each other.
   (let [forbidden ["rank" "leaderboard" "compare" "score" "reputation" "best" "worst" "top"]
         public (->> (ns-publics 'ake.methods.contributor)
-                    keys (map (comp str/lower-case name)))
+                    keys (map (comp str/lower name)))
         leaks (for [n public f forbidden :when (str/includes? n f)] n)]
     (is (empty? leaks) (str "G9: ranking/score-of-soul-shaped API leaked: " (vec leaks)))))
 

@@ -18,7 +18,7 @@
   Convention (root CLAUDE.md): trajectory keys are DID strings; event maps + the trajectory view
   use \"string\" keys (\"outcome\", \"as_of\", \"accepted\", …) matching the Python dicts so the
   analyze stack + report read on the same shape. Pure fns; no I/O. closed-vocab → ex-info."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 ;; defaults — a window and a flood ceiling; both generous (this throttles vandalism, not zeal)
 (def RATE-WINDOW 3600)          ;; seconds

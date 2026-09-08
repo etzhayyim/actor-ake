@@ -7,7 +7,7 @@
     sbt-vote    — 1 SBT = 1 vote with a timelock; accepted iff yes > no after the window.
     council-lv7 — invariant-adjacent; this cell returns :pending (Council attests separately, G7).
   A server-signed tally is REFUSED (no-server-key)."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 (def DEFAULT-TIMELOCK-H 48)
 (def MECHANISMS #{"optimistic" "sbt-vote" "council-lv7"})
@@ -46,7 +46,7 @@
       (not (contains? MECHANISMS (get cs "mechanism")))
       (refuse (str "unknown review mechanism '" (get cs "mechanism") "'"))
 
-      (str/starts-with? (str/lower-case (get cs "signed_by")) "server")
+      (str/starts-with? (str/lower (get cs "signed_by")) "server")
       (refuse "no-server-key: a tally cannot be server-signed (ADR-2605231525)")
 
       :else

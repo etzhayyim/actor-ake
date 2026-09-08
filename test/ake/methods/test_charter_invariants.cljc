@@ -11,7 +11,7 @@
   constants come from `ake.methods.triage` (ROUTES / route-for). The __main__ standalone
   runner is omitted."
   (:require [clojure.test :refer [deftest is run-tests]]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [ake.methods.triage :as triage]
             #?(:clj [ake.methods._edn :as edn])))
 
@@ -91,7 +91,7 @@
    (deftest test-triage-lexicon-has-no-decision-field
      (let [p (props "editTriage")]
        (is (not (contains? p ":decision")))
-       (is (not (some #(str/includes? (str/lower-case (str %)) "decision") (keys p)))))))
+       (is (not (some #(str/includes? (str/lower (str %)) "decision") (keys p)))))))
 
 #?(:clj
    (deftest test-triage-route-enum-has-no-bare-accept-reject

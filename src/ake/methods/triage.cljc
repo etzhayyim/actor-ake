@@ -23,7 +23,7 @@
 
   Convention (root CLAUDE.md): Python ':…' keyword strings stay strings; pure fns; closed-vocab
   / gate → ex-info (the Python ValueError). Deterministic at R0 (honest: no live LLM here)."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 ;; ── closed vocab (mirror of the ontology :db/allowed) ───────────────────────────
 (def TARGET-KINDS ["kg-fact" "actor-profile"])
@@ -57,13 +57,13 @@
       (str/replace #"^:+" "")
       (str/split #"/")
       last
-      str/lower-case))
+      str/lower))
 
 (defn verifiable-provenance?
   "True if `p` looks like a verifiable URL/CID (http(s)/ipfs/cid:/bafy/ '://').
   (Python `_verifiable_provenance`; promote cell imports this.)"
   [p]
-  (let [p (-> (str (or p "")) str/trim str/lower-case)]
+  (let [p (-> (str (or p "")) str/trim str/lower)]
     (boolean
      (or (some #(str/starts-with? p %) ["http://" "https://" "ipfs://" "cid:" "bafy"])
          (str/includes? p "://")))))
@@ -71,7 +71,7 @@
 (defn rider-hit
   "Return the first Charter-Rider §2 forbidden token found, or \"\" if clean."
   [& texts]
-  (let [blob (str/lower-case (str/join " " (map #(str (or % "")) texts)))]
+  (let [blob (str/lower (str/join " " (map #(str (or % "")) texts)))]
     (or (some #(when (str/includes? blob %) %) RIDER-FORBIDDEN) "")))
 
 ;; ── round(min(q, 1.0), 4) — HALF_EVEN over the exact double, mirroring Python round() ──

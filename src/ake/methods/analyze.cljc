@@ -17,7 +17,7 @@
   Convention (root CLAUDE.md): Python ':…' keyword strings stay strings; row maps use
   \"string\" keys matching the Python dicts; pure fns; byte-parity report (matches
   analyze.py's _report f-strings exactly, incl. the {:.2f} HALF_EVEN acceptance rate)."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [ake.methods._edn :as edn]
             [ake.methods.revision :as rev]
             [ake.methods.contributor :as contrib]

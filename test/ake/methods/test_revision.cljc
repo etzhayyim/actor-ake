@@ -3,7 +3,7 @@
   promotion (G5). 1:1 Clojure port of `methods/test_revision.py` (clojure.test). Every
   Python assertion ported. The seed is loaded via `ake.methods._edn` (the #?(:clj) file
   edge); `_e` mirrors the Python helper that indexes the seed batch by `:edit/id`."
-  (:require [clojure.test :refer [deftest is run-tests]]
+  (:require [kotoba.lang.text] [clojure.test :refer [deftest is run-tests]]
             [ake.methods.revision :as rev]
             #?(:clj [ake.methods._edn :as edn])))
 
@@ -71,7 +71,7 @@
              nil
              (catch #?(:clj clojure.lang.ExceptionInfo :cljs js/Error) ex ex))]
     (is (some? ex) "expected an exception")
-    (is (clojure.string/includes? (str (#?(:clj .getMessage :cljs ex-message) ex)) "G4"))))
+    (is (kotoba.lang.text/includes? (str (#?(:clj .getMessage :cljs ex-message) ex)) "G4"))))
 
 (deftest test-promote-with-nothing-to-promote-raises
   (let [ex (try
@@ -80,7 +80,7 @@
              nil
              (catch #?(:clj clojure.lang.ExceptionInfo :cljs js/Error) ex ex))]
     (is (some? ex) "expected an exception")
-    (is (clojure.string/includes? (str (#?(:clj .getMessage :cljs ex-message) ex))
+    (is (kotoba.lang.text/includes? (str (#?(:clj .getMessage :cljs ex-message) ex))
                                   "nothing to promote"))))
 
 #?(:clj (defn -main [& _] (run-tests 'ake.methods.test-revision)))

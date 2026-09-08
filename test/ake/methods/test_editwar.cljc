@@ -11,7 +11,7 @@
   Pure over in-memory history vectors (no file edge). assertRaises(ValueError) →
   (thrown? …). The __main__ standalone runner is omitted."
   (:require [clojure.test :refer [deftest is run-tests]]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [ake.methods.revision :as rev]
             [ake.methods.triage :as triage]))
 

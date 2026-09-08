@@ -8,7 +8,7 @@
   HERMETIC: asserted against the committed FIXTURE
   (data/sample-profile-seed.kotoba.edn) with exact, known counts."
   (:require [clojure.java.io :as io]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [clojure.test :refer [deftest is]]
             [ake.methods.ingest :as ingest]
             [ake.methods.revision :as rev]))
