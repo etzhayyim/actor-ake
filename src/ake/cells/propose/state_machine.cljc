@@ -15,7 +15,7 @@
   A SCREENED proposal is then RECORDED as an append-only :edit/* datom. REFUSAL gate, not a clamp.
 
   State dicts use STRING keys (\"cell_state\", \"edit_id\", …) mirroring the Python dict threading."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [ake.methods.contributor :as contributor]))
 
 (def TARGET-KINDS #{"kg-fact" "actor-profile"})
@@ -45,7 +45,7 @@
   (merge (default-state) (get d "cell_state" {})))
 
 (defn- kw* [v]
-  (-> (str (or v "")) (str/replace #"^:+" "") (str/split #"/") last str/lower-case))
+  (-> (str (or v "")) (str/replace #"^:+" "") (str/split #"/") last str/lower))
 
 (defn transition-to-screened [state]
   (let [s0 (state-of state)

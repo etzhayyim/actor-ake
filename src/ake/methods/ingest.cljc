@@ -17,7 +17,7 @@
   write) at the #?(:clj) edge."
   (:require [ake.methods._edn :as edn]
             [ake.methods.revision :as rev]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             #?(:clj [clojure.java.io :as io])))
 
 (def genesis-by "did:web:etzhayyim.com:operator:genesis")

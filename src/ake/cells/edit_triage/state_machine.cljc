@@ -6,7 +6,7 @@
   reusing the single source of truth in methods/triage.cljc. G2 INVARIANT: the model SCORES and the
   PURE FUNCTION `route-for` routes — neither ever emits an accept/reject decision (非裁定). G6:
   any LLM refinement of the scores is Murakumo-only. REFUSED if the proposal fails a hard gate."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [ake.methods.triage :as triage]))
 
 (def phase-init "init")

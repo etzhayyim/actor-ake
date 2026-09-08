@@ -5,7 +5,7 @@
   The 'view history' tab, as a cell. A cleared promotion APPENDS one revision; the cell guarantees
   the history only ever GROWS (G5 — never overwrite, never delete; 非終末論). Reuses
   methods/revision.cljc so the append/read semantics are a single source of truth."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [ake.methods.revision :as revision]))
 
 (def phase-init "init")

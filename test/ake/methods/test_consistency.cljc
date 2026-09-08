@@ -15,7 +15,7 @@
   Paths are repo-root-relative (bb is run from the repo root, as the other ake test_*.cljc
   expect — cf. test_analyze.cljc / test_revision.cljc seed-path)."
   (:require [clojure.test :refer [deftest is run-tests]]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [ake.methods.triage :as triage]
             #?(:clj [clojure.edn :as platform-edn])
             #?(:clj [ake.methods._edn :as edn])

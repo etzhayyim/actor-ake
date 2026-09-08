@@ -5,7 +5,7 @@
   #?(:clj) file edge); keywords stay \":…\" STRINGS so a lexicon `:const \"member\"` /
   `:enum [\"kg-fact\" …]` reads byte-identically to the Python `load_edn`. The __main__
   standalone runner is omitted (Clojure runs via -main / run-tests)."
-  (:require [clojure.test :refer [deftest is run-tests]]
+  (:require [kotoba.lang.text] [clojure.test :refer [deftest is run-tests]]
             #?(:clj [ake.methods._edn :as edn])))
 
 #?(:clj
@@ -32,7 +32,7 @@
      (doseq [name lexicons]
        (let [d (lex name)
              rec (record* d)]
-         (is (clojure.string/starts-with? (get d ":id") "com.etzhayyim.ake."))
+         (is (kotoba.lang.text/starts-with? (get d ":id") "com.etzhayyim.ake."))
          (is (= "object" (get rec ":type")))
          (is (and (map? (get rec ":properties")) (seq (get rec ":properties"))))))))
 
@@ -43,7 +43,7 @@
        (let [d (lex name)
              rec (record* d)
              ;; props = {k.lstrip(":") for k in rec[":properties"]}
-             props (set (map #(clojure.string/replace % #"^:+" "")
+             props (set (map #(kotoba.lang.text/replace % #"^:+" "")
                              (keys (get rec ":properties"))))]
          (doseq [req (get rec ":required" [])]
            (is (contains? props req)

@@ -4,7 +4,7 @@
   `run` is pure over a parsed seed; the file edge (`load-edn`) is #?(:clj). The report is
   exercised via `report` (byte-identical to analyze.py's _report)."
   (:require [clojure.test :refer [deftest is run-tests]]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [ake.methods.analyze :as a]
             [ake.methods.contributor :as contrib]
             [ake.methods.revision :as rev]

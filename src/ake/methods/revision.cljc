@@ -18,7 +18,7 @@
 
   `_kw` + `verifiable-provenance?` are inlined from triage.py (the Python module
   imports them from triage); they carry the same semantics."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 ;; ── helpers (mirror triage.py `_kw` + `_verifiable_provenance`) ───────────
 
@@ -29,12 +29,12 @@
       (str/replace #"^:+" "")
       (str/split #"/")
       last
-      str/lower-case))
+      str/lower))
 
 (defn verifiable-provenance?
   "True if `p` looks like a verifiable URL/CID (http(s)/ipfs/cid:/bafy/ '://')."
   [p]
-  (let [p (-> (str (or p "")) str/trim str/lower-case)]
+  (let [p (-> (str (or p "")) str/trim str/lower)]
     (boolean
      (or (some #(str/starts-with? p %) ["http://" "https://" "ipfs://" "cid:" "bafy"])
          (str/includes? p "://")))))

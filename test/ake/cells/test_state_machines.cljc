@@ -3,7 +3,7 @@
   (ADR-2606052100). .solve() is NOT called for behaviour; each cell's solve raises at R0.
   The cell.py-importing variant (test_all_cells_solve_raise via *.cell) is dropped (no cell.py);
   the equivalent solve-raises assertion is exercised per state-machine."
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.lang.text] [clojure.test :refer [deftest is]]
             [ake.cells.propose.state-machine :as propose]
             [ake.cells.edit-triage.state-machine :as edit-triage]
             [ake.cells.review-vote.state-machine :as review-vote]
@@ -36,22 +36,22 @@
 (deftest test-propose-refuses-non-member
   (let [cs (get (screen {"author_kind" "server"}) "cell_state")]
     (is (= propose/phase-refused (get cs "phase")))
-    (is (clojure.string/includes? (get cs "refusal") "G1"))))
+    (is (kotoba.lang.text/includes? (get cs "refusal") "G1"))))
 
 (deftest test-propose-refuses-server-held-key
   (let [cs (get (screen {"server_held_key" true}) "cell_state")]
     (is (= propose/phase-refused (get cs "phase")))
-    (is (clojure.string/includes? (get cs "refusal") "no-server-key"))))
+    (is (kotoba.lang.text/includes? (get cs "refusal") "no-server-key"))))
 
 (deftest test-propose-refuses-unsourced
   (let [cs (get (screen {"provenance" ""}) "cell_state")]
     (is (= propose/phase-refused (get cs "phase")))
-    (is (clojure.string/includes? (get cs "refusal") "G4"))))
+    (is (kotoba.lang.text/includes? (get cs "refusal") "G4"))))
 
 (deftest test-propose-refuses-impersonation-target
   (let [cs (get (screen {"target_kind" "entity-speech"}) "cell_state")]
     (is (= propose/phase-refused (get cs "phase")))
-    (is (clojure.string/includes? (get cs "refusal") "G3"))))
+    (is (kotoba.lang.text/includes? (get cs "refusal") "G3"))))
 
 (deftest test-propose-refuses-throttled-author
   ;; documented in CLAUDE.md ("G9 anti-vandalism / contributor-trajectory... Repeated
@@ -63,7 +63,7 @@
         traj {author refused-run}
         cs (get (screen {"contributor_trajectory" traj}) "cell_state")]
     (is (= propose/phase-refused (get cs "phase")))
-    (is (clojure.string/includes? (get cs "refusal") "G9"))))
+    (is (kotoba.lang.text/includes? (get cs "refusal") "G9"))))
 
 (deftest test-propose-allows-author-recovered-by-one-accepted-edit
   ;; throttling is recoverable by construction — a single accepted edit anywhere in the
@@ -90,7 +90,7 @@
   (let [bad (assoc (good-edit) ":edit/provenance" "")
         cs (get (edit-triage/triage {"cell_state" {} "edit" bad}) "cell_state")]
     (is (= edit-triage/phase-refused (get cs "phase")))
-    (is (clojure.string/includes? (get cs "refusal") "G4"))))
+    (is (kotoba.lang.text/includes? (get cs "refusal") "G4"))))
 
 (deftest test-triage-routes-invariant-to-council
   (let [e (assoc (good-edit) ":edit/target-attr" ":license")
@@ -123,7 +123,7 @@
   (let [cs (get (review-vote/tally {"cell_state" {} "edit_id" "e2" "mechanism" "sbt-vote" "yes" 9 "no" 0
                                     "signed_by" "server-bot"}) "cell_state")]
     (is (= review-vote/phase-refused (get cs "phase")))
-    (is (clojure.string/includes? (get cs "refusal") "no-server-key"))))
+    (is (kotoba.lang.text/includes? (get cs "refusal") "no-server-key"))))
 
 ;; ───────────────────────────── promote (G4/G8/G9) ───────────────────────────
 (deftest test-promote-clears-accepted-member-signed
@@ -140,7 +140,7 @@
   (let [cs (get (promote/review-promotion {"cell_state" {} "edit_id" "e1" "outcome" "accepted"
                                            "signed_by" "server" "to_sourcing" "representative"}) "cell_state")]
     (is (= promote/phase-refused (get cs "phase")))
-    (is (clojure.string/includes? (get cs "refusal") "G9"))))
+    (is (kotoba.lang.text/includes? (get cs "refusal") "G9"))))
 
 (deftest test-promote-refuses-unaccepted
   (let [cs (get (promote/review-promotion {"cell_state" {} "edit_id" "e4" "outcome" "pending"
@@ -152,7 +152,7 @@
                                            "to_sourcing" "authoritative" "provenance" "trust me"
                                            "signed_by" "did:web:etzhayyim.com:member:op"}) "cell_state")]
     (is (= promote/phase-refused (get cs "phase")))
-    (is (clojure.string/includes? (get cs "refusal") "G4"))))
+    (is (kotoba.lang.text/includes? (get cs "refusal") "G4"))))
 
 ;; ───────────────────────────── revision_log (G5) ────────────────────────────
 (deftest test-revision-log-appends-and-grows

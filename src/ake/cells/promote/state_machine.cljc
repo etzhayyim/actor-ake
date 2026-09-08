@@ -9,7 +9,7 @@
     G4 — a sourcing promotion to :authoritative carries verifiable provenance;
     G8 — published stays false (live publish into the served registry is Council Lv6+ + operator).
   REFUSAL gate, not an auto-promoter."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [ake.methods.triage :as triage]))
 
 (def phase-init "init")
@@ -55,7 +55,7 @@
       (refuse (str "outcome '" (get cs "outcome") "' is not 'accepted'; nothing to promote"))
 
       (or (str/blank? (get cs "signed_by"))
-          (str/starts-with? (str/lower-case (get cs "signed_by")) "server"))
+          (str/starts-with? (str/lower (get cs "signed_by")) "server"))
       (refuse "G9: promotion needs a member/operator signature; server signature refused")
 
       (and (= (get cs "to_sourcing") "authoritative")
