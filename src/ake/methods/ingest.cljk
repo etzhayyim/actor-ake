@@ -32,7 +32,7 @@
 #?(:clj
    (defn- repo-root []
      ;; methods file lives at methods/ ; parents[3] = repo root.
-     ;; bb runs from the worktree root (bb.edn cwd) → resolve from there.
+     ;; kbb -M:runs from the worktree root (bb.edn cwd) → resolve from there.
      (let [cwd (io/file (System/getProperty "user.dir"))
            candidate (io/file cwd "contracts" "schemas" "actor-profile-seed.kotoba.edn")]
        (if (.exists candidate)

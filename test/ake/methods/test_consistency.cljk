@@ -12,7 +12,7 @@
   `ake.methods.triage`. All file / filesystem I/O sits behind #?(:clj). The __main__
   standalone runner is omitted.
 
-  Paths are repo-root-relative (bb is run from the repo root, as the other ake test_*.cljc
+  Paths are repo-root-relative (kbb -M:is run from the repo root, as the other ake test_*.cljc
   expect — cf. test_analyze.cljc / test_revision.cljc seed-path)."
   (:require [clojure.test :refer [deftest is run-tests]]
             [kotoba.lang.text :as str]
