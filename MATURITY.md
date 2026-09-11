@@ -16,7 +16,7 @@
 - **Canonical Clojure path EXECUTED green** (`./run_tests_cljc.sh`, wired into `./run_tests.sh`):
   the `.cljc` methods are the canonical port and the `.py` files mirror them — previously only the
   Python mirror was run and `test_consistency` merely *asserted* the two matched. The 10 `.cljc`
-  suites now run under **babashka** (`bb --classpath 20-actors`, repo-root cwd for the
+  suites now run under **babashka** (`kbb --classpath 20-actors`, repo-root cwd for the
   repo-relative seed paths): **110 tests / 447 assertions, 0 fail 0 error**. The runner skips
   gracefully (exit 0) where `bb` is absent, so the Python suite still gates a bb-less checkout.
   This closes the "canonical but never run" gap — a future edit that breaks `triage.cljc` while
