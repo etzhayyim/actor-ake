@@ -5,7 +5,7 @@
   #?(:clj) file edge); keywords stay \":…\" STRINGS so a lexicon `:const \"member\"` /
   `:enum [\"kg-fact\" …]` reads byte-identically to the Python `load_edn`. The __main__
   standalone runner is omitted (Clojure runs via -main / run-tests)."
-  (:require [kotoba.lang.text] [clojure.test :refer [deftest is run-tests]]
+  (:require [kotoba.lang.text] [kotoba.test :refer [deftest is run-tests]]
             #?(:clj [ake.methods._edn :as edn])))
 
 #?(:clj

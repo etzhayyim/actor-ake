@@ -3,7 +3,7 @@
   promotion (G5). 1:1 Clojure port of `methods/test_revision.py` (clojure.test). Every
   Python assertion ported. The seed is loaded via `ake.methods._edn` (the #?(:clj) file
   edge); `_e` mirrors the Python helper that indexes the seed batch by `:edit/id`."
-  (:require [kotoba.lang.text] [clojure.test :refer [deftest is run-tests]]
+  (:require [kotoba.lang.text] [kotoba.test :refer [deftest is run-tests]]
             [ake.methods.revision :as rev]
             #?(:clj [ake.methods._edn :as edn])))
 

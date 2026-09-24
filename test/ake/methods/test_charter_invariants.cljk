@@ -10,7 +10,7 @@
   Ontology / lexicon EDN is read via `ake.methods._edn` (the #?(:clj) file edge); the code
   constants come from `ake.methods.triage` (ROUTES / route-for). The __main__ standalone
   runner is omitted."
-  (:require [clojure.test :refer [deftest is run-tests]]
+  (:require [kotoba.test :refer [deftest is run-tests]]
             [kotoba.lang.text :as str]
             [ake.methods.triage :as triage]
             #?(:clj [ake.methods._edn :as edn])))

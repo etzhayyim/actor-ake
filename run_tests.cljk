@@ -1,4 +1,4 @@
-(require '[clojure.test :as t])
+(require '[kotoba.test :as t])
 (def suites '[ake.cells.test-membrane-flow ake.cells.test-state-machines
  ake.methods.test--edn ake.methods.test-analyze ake.methods.test-charter-invariants
  ake.methods.test-consistency ake.methods.test-contributor ake.methods.test-editwar
