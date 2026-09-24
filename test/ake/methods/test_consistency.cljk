@@ -17,7 +17,7 @@
   (:require [kotoba.test :refer [deftest is run-tests]]
             [kotoba.lang.text :as str]
             [ake.methods.triage :as triage]
-            #?(:clj [clojure.edn :as platform-edn])
+            #?(:clj [kotoba.lang.edn :as platform-edn])
             #?(:clj [ake.methods._edn :as edn])
             #?(:clj [clojure.java.io :as io])))
 
