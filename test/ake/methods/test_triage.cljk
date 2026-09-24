@@ -3,7 +3,7 @@
   1:1 Clojure port of `methods/test_triage.py` (clojure.test). Every Python assertion ported.
   The seed is loaded via `ake.methods._edn` (the #?(:clj) file edge); the core route_for /
   assess sweeps are pure and run on every platform."
-  (:require [clojure.test :refer [deftest is run-tests]]
+  (:require [kotoba.test :refer [deftest is run-tests]]
             [ake.methods.triage :as triage]
             #?(:clj [ake.methods._edn :as edn])))
 

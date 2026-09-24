@@ -1,7 +1,7 @@
 (ns ake.methods.test-contributor
   "test_contributor.cljc — 朱 (ake) anti-vandalism rate + recoverable Wellbecoming trajectory (G9).
   1:1 Clojure port of `methods/test_contributor.py` (clojure.test). Every Python assertion ported."
-  (:require [clojure.test :refer [deftest is run-tests]]
+  (:require [kotoba.test :refer [deftest is run-tests]]
             [kotoba.lang.text :as str]
             [ake.methods.contributor :as contrib]))
 

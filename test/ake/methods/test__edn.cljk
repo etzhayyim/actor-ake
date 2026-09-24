@@ -2,7 +2,7 @@
   "test__edn.cljc — 朱 (ake) EDN reader. 1:1 Clojure port of `methods/test__edn.py`.
   `parse-edn` is pure over a string and runs on every platform; the `load-edn` file edge is
   #?(:clj). Pins the atom-level reads the whole seed/ontology load depends on."
-  (:require [clojure.test :refer [deftest is run-tests]]
+  (:require [kotoba.test :refer [deftest is run-tests]]
             [ake.methods._edn :as edn]
             #?(:clj [clojure.java.io :as io])))
 

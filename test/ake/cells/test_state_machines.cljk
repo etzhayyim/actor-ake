@@ -3,7 +3,7 @@
   (ADR-2606052100). .solve() is NOT called for behaviour; each cell's solve raises at R0.
   The cell.py-importing variant (test_all_cells_solve_raise via *.cell) is dropped (no cell.py);
   the equivalent solve-raises assertion is exercised per state-machine."
-  (:require [kotoba.lang.text] [clojure.test :refer [deftest is]]
+  (:require [kotoba.lang.text] [kotoba.test :refer [deftest is]]
             [ake.cells.propose.state-machine :as propose]
             [ake.cells.edit-triage.state-machine :as edit-triage]
             [ake.cells.review-vote.state-machine :as review-vote]

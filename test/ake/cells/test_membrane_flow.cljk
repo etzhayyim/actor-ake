@@ -3,7 +3,7 @@
   (ADR-2606052100). Threads one edit through all five CELLS in sequence —
   propose → edit_triage → review_vote → promote → revision_log — exactly as the runtime Pregel
   graph would, proving they compose. Hermetic; .solve() is never called (R0 scaffolds raise)."
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [ake.cells.propose.state-machine :as propose]
             [ake.cells.edit-triage.state-machine :as edit-triage]
             [ake.cells.review-vote.state-machine :as review-vote]
