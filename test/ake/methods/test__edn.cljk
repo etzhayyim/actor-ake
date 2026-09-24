@@ -4,7 +4,7 @@
   #?(:clj). Pins the atom-level reads the whole seed/ontology load depends on."
   (:require [kotoba.test :refer [deftest is run-tests]]
             [ake.methods._edn :as edn]
-            #?(:clj [clojure.java.io :as io])))
+            #?(:clj [kotoba.io :as io])))
 
 (deftest test-reads-true-false-nil
   (is (= [true false nil] (edn/parse-edn "[true false nil]"))))
