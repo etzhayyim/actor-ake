@@ -7,7 +7,7 @@
 
   HERMETIC: asserted against the committed FIXTURE
   (data/sample-profile-seed.kotoba.edn) with exact, known counts."
-  (:require [clojure.java.io :as io]
+  (:require [kotoba.io :as io]
             [kotoba.lang.text :as str]
             [kotoba.test :refer [deftest is]]
             [ake.methods.ingest :as ingest]
@@ -18,8 +18,8 @@
     (loop [d cwd]
       (cond
         (nil? d) cwd
-        (.exists (io/file d "data" "sample-profile-seed.kotoba.edn")) d
-        :else (recur (.getParentFile d))))))
+        (io/exists? (io/file d "data" "sample-profile-seed.kotoba.edn")) d
+        :else (recur (io/parent-file d))))))
 
 (def ^:private fixture
   (io/file (repo-root) "data" "sample-profile-seed.kotoba.edn"))

@@ -55,7 +55,7 @@
         (let [e (first es)
               as-of (+ as-of 10)
               author (get e ":edit/author" "?")
-              tri (try (triage/score-edit e) (catch #?(:clj clojure.lang.ExceptionInfo :cljs :default) ex ex))]
+              tri (try (triage/score-edit e) (catch :default ex ex))]
           (if (instance? #?(:clj Throwable :cljs js/Error) tri)
             ;; ValueError at intake → refused-at-intake row + refused trajectory event
             (recur (rest es) as-of history

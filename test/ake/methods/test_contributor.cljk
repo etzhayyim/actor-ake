@@ -21,7 +21,7 @@
       (is (= {"accepted" 1 "refused" 1} (contrib/counts t2 "did:m:a"))))))
 
 (deftest test-record-rejects-bad-outcome
-  (is (thrown? #?(:clj clojure.lang.ExceptionInfo :cljs js/Error)
+  (is (thrown? js/Error
                (contrib/record (contrib/empty*) "did:m:a" "maybe" 1))))
 
 (deftest test-acceptance-rate

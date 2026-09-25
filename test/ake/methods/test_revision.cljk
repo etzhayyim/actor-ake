@@ -69,7 +69,7 @@
              (rev/promote-sourcing h "org.corp.tsmc" "hq-address" "trust me"
                                    200 "did:member:x" "eP")
              nil
-             (catch #?(:clj clojure.lang.ExceptionInfo :cljs js/Error) ex ex))]
+             (catch js/Error ex ex))]
     (is (some? ex) "expected an exception")
     (is (kotoba.lang.text/includes? (str (#?(:clj .getMessage :cljs ex-message) ex)) "G4"))))
 
@@ -78,7 +78,7 @@
              (rev/promote-sourcing [] "org.corp.none" "x" "https://e.com"
                                    1 "did:member:x" "eP")
              nil
-             (catch #?(:clj clojure.lang.ExceptionInfo :cljs js/Error) ex ex))]
+             (catch js/Error ex ex))]
     (is (some? ex) "expected an exception")
     (is (kotoba.lang.text/includes? (str (#?(:clj .getMessage :cljs ex-message) ex))
                                   "nothing to promote"))))
