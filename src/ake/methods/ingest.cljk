@@ -18,7 +18,7 @@
   (:require [ake.methods._edn :as edn]
             [ake.methods.revision :as rev]
             [kotoba.lang.text :as str]
-            #?(:clj [clojure.java.io :as io])))
+            #?(:clj [kotoba.io :as io])))
 
 (def genesis-by "did:web:etzhayyim.com:operator:genesis")
 
@@ -35,14 +35,14 @@
      ;; kbb -M:runs from the worktree root (bb.edn cwd) → resolve from there.
      (let [cwd (io/file (System/getProperty "user.dir"))
            candidate (io/file cwd "contracts" "schemas" "actor-profile-seed.kotoba.edn")]
-       (if (.exists candidate)
+       (if (io/exists? candidate)
          cwd
          ;; fall back to walking up from the methods dir if cwd isn't the repo root
          (loop [d cwd]
            (cond
              (nil? d) cwd
-             (.exists (io/file d "contracts" "schemas" "actor-profile-seed.kotoba.edn")) d
-             :else (recur (.getParentFile d))))))))
+             (io/exists? (io/file d "contracts" "schemas" "actor-profile-seed.kotoba.edn")) d
+             :else (recur (io/parent-file d))))))))
 
 #?(:clj
    (defn profile-seed-path []
@@ -133,6 +133,6 @@
      (let [res (genesis-revisions)
            out-dir (io/file (System/getProperty "user.dir")
                             "20-actors" "ake" "methods" "out")]
-       (.mkdirs out-dir)
+       (io/mkdirs out-dir)
        (spit (io/file out-dir "genesis-revisions.md") (report res))
        (print (report res)))))

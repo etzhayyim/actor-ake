@@ -19,7 +19,7 @@
             [ake.methods.triage :as triage]
             #?(:clj [kotoba.lang.edn :as platform-edn])
             #?(:clj [ake.methods._edn :as edn])
-            #?(:clj [clojure.java.io :as io])))
+            #?(:clj [kotoba.io :as io])))
 
 #?(:clj (def ^:private root "."))
 #?(:clj (def ^:private repo "."))
@@ -46,15 +46,15 @@
    (deftest test-manifest-cells-have-dirs-and-state-machines
      (doseq [cell (get (manifest) "cells")]
        (let [d (io/file cells-dir (get cell "name"))]
-         (is (.isFile (io/file d "state_machine.cljc"))
+         (is (io/file? (io/file d "state_machine.cljc"))
              (str "missing " (get cell "name") "/state_machine.cljc"))))))
 
 #?(:clj
    (deftest test-every-cell-dir-is-in-the-manifest
      (let [declared (set (map #(get % "name") (get (manifest) "cells")))
-           on-disk (set (for [p (.listFiles (io/file cells-dir))
-                              :when (and (.isDirectory p) (.isFile (io/file p "state_machine.cljc")))]
-                          (.getName p)))]
+           on-disk (set (for [p (io/list-files (io/file cells-dir))
+                              :when (and (io/directory? p) (io/file? (io/file p "state_machine.cljc")))]
+                          (io/file-name p)))]
        (is (= on-disk declared) (str "cell tree " on-disk " != manifest " declared)))))
 
 ;; ── manifest lexicons ↔ lex/*.edn ───────────────────────────────────────────
@@ -64,15 +64,15 @@
        (let [lid (get ns "id")
              last* (last (str/split lid #"\."))
              f (io/file lex-dir (str last* ".edn"))]
-         (is (.isFile f) (str "missing lexicon file for " lid))
+         (is (io/file? f) (str "missing lexicon file for " lid))
          (is (= lid (get (edn/reconstitute (load-edn f) (str "lex." last*)) ":id")))))))
 
 #?(:clj
    (deftest test-every-lex-file-is-declared-in-manifest
      (let [declared (set (map #(get % "id") (get (manifest) "lexiconNamespaces")))
-           on-disk (set (for [f (.listFiles (io/file lex-dir))
-                              :when (str/ends-with? (.getName f) ".edn")]
-                          (let [name (str/replace (.getName f) #"\.edn$" "")]
+           on-disk (set (for [f (io/list-files (io/file lex-dir))
+                              :when (str/ends-with? (io/file-name f) ".edn")]
+                          (let [name (str/replace (io/file-name f) #"\.edn$" "")]
                             (get (edn/reconstitute (load-edn f) (str "lex." name)) ":id"))))]
        (is (= on-disk declared)))))
 
@@ -125,6 +125,6 @@
 #?(:clj
    (deftest test-adr-file-exists
      (let [adr (io/file repo (:master-adr (repository-references)))]
-       (is (.isFile adr) (str "ADR not found: " adr)))))
+       (is (io/file? adr) (str "ADR not found: " adr)))))
 
 #?(:clj (defn -main [& _] (run-tests 'ake.methods.test-consistency)))
